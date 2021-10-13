@@ -21,7 +21,8 @@ To relight video frames under `./data/test_video/sample`, run the following code
 ```
 sh ./scripts/demo_video.sh PATH_TO_YOUR_INPUT_FOLDER
 ```
-The flicker-tolerant relighting results will be saved in `./demo/relighting_video/flicker_reduction` .
+The flicker-tolerant relighting results will be saved in `./demo/relighting_video/flicker_reduction`.
+Please terminate the training manually before noise appears in the result.
 
 ## Citation
 Please cite our paper if you find the code useful:
