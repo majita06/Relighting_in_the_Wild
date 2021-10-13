@@ -9,16 +9,18 @@ Daichi Tajima, Yoshihiro Kanamori, Yuki Endo: "Relighting Humans in the Wild: Mo
 2. PyTorch(>=1.5)
 
 ## Demo
-
-Relighting images
+To relight images under `PATH_TO_YOUR_INPUT_FOLDER`, run the following code:
 ```
 sh ./scripts/demo_image.sh PATH_TO_YOUR_INPUT_FOLDER
 ```
+The relighting results will be saved in `./demo/relighting_image/2nd` .
 
-Relighting videos
+
+To relight video frames under `PATH_TO_YOUR_INPUT_FOLDER`, run the following code:
 ```
 sh ./scripts/demo_video.sh PATH_TO_YOUR_INPUT_FOLDER
 ```
+The flicker-tolerant relighting results will be saved in `./demo/relighting_video/flicker_reduction` .
 
 ## Citation
 Please cite our paper if you find the code useful:
