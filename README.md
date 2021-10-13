@@ -10,14 +10,14 @@ Daichi Tajima, Yoshihiro Kanamori, Yuki Endo: "Relighting Humans in the Wild: Mo
 
 ## Demo
 ### Applying to images
-To relight images under `PATH_TO_YOUR_INPUT_FOLDER`, run the following code:
+To relight images under `./data/test_image`, run the following code:
 ```
 sh ./scripts/demo_image.sh PATH_TO_YOUR_INPUT_FOLDER
 ```
 The relighting results will be saved in `./demo/relighting_image/2nd` .
 
 ### Applying to videos
-To relight video frames under `PATH_TO_YOUR_INPUT_FOLDER`, run the following code:
+To relight video frames under `./data/test_video/sample`, run the following code:
 ```
 sh ./scripts/demo_video.sh PATH_TO_YOUR_INPUT_FOLDER
 ```
