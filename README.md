@@ -22,7 +22,7 @@ sh ./scripts/demo_video.sh PATH_TO_YOUR_INPUT_FOLDER
 
 ## Citation
 Please cite our paper if you find the code useful:
-
+```
 @article{tajimaPG21,
   author    = {Daichi Tajima,
                Yoshihiro Kanamori
@@ -34,3 +34,4 @@ Please cite our paper if you find the code useful:
   pages     = {--},
   year      = {2021},
 }
+```
