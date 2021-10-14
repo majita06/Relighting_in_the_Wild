@@ -51,8 +51,6 @@ def square(img):
     sq = sq.astype(np.float32)
     return sq
 
-
-
 def white_mask(img,mask):
     mask3 = np.stack([mask for i in range(3)],2)
     img[mask3<0.9] = 1.

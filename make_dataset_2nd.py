@@ -69,6 +69,7 @@ img_paths = sorted(glob(indir_path + '/*.jpg'))
 mask_paths = sorted(glob(indir_path + '/*_mask.png'))
 N_imgs = len(mask_paths)
 N_masks = len(mask_paths)
+print('inferring...')
 for i in tqdm(range(N_imgs)):
     img_name = os.path.basename(img_paths[i])[:-len('.jpg')]
     if img_name in test_data_list:

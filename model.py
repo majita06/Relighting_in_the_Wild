@@ -27,7 +27,7 @@ class ResidualBlock(nn.Module):
 
 class CNNAE2ResNet(nn.Module):
 
-    def __init__(self,in_channels=3,train=True):
+    def __init__(self,in_channels=3,albedo_decoder_channels=4,train=True):
         super(CNNAE2ResNet,self).__init__()
         self.c0 = nn.Conv2d(in_channels, 64, 4, stride=2, padding=1) # 1024 -> 512
         nn.init.normal_(self.c0.weight, 0.0, 0.02)
@@ -89,7 +89,7 @@ class CNNAE2ResNet(nn.Module):
         nn.init.normal_(self.dc4b.weight, 0.0, 0.02)
         self.up4b = nn.Upsample(scale_factor=2, mode='bilinear', align_corners=True)
 
-        self.dc5b = nn.Conv2d(128, 4,kernel_size=3,padding=1)
+        self.dc5b = nn.Conv2d(128, albedo_decoder_channels,kernel_size=3,padding=1)
         nn.init.normal_(self.dc5b.weight, 0.0, 0.02)
         self.up5b = nn.Upsample(scale_factor=2, mode='bilinear', align_corners=True)
 
