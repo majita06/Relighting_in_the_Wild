@@ -29,7 +29,7 @@ Please cite our paper if you find the code useful:
 ```
 @article{tajimaPG21,
   author    = {Daichi Tajima,
-               Yoshihiro Kanamori
+               Yoshihiro Kanamori,
                Yuki Endo},
   title     = {Relighting Humans in the Wild: Monocular Full-Body Human Relighting with Domain Adaptation},
   journal   = {Comput. Graph. Forum},
