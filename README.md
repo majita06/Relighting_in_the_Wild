@@ -10,16 +10,16 @@ Daichi Tajima, Yoshihiro Kanamori, Yuki Endo: "Relighting Humans in the Wild: Mo
 
 ## Demo
 ### Applying to images
-To relight images under `./data/test_image`, run the following code:
+To relight images under `./data/test_images`, run the following code:
 ```
-sh ./scripts/demo_image.sh PATH_TO_YOUR_INPUT_FOLDER
+sh ./scripts/demo_image.sh ./data/sample_images
 ```
 The relighting results will be saved in `./demo/relighting_image/2nd` .
 
 ### Applying to videos
-To relight video frames under `./data/test_video/sample`, run the following code:
+To relight video frames under `./data/test_video/sample_frames`, run the following code:
 ```
-sh ./scripts/demo_video.sh PATH_TO_YOUR_INPUT_FOLDER
+sh ./scripts/demo_video.sh ./data/test_video/sample_frames
 ```
 The flicker-tolerant relighting results will be saved in `./demo/relighting_video/flicker_reduction`.
 Please terminate the training manually before noise appears in the result.
