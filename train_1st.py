@@ -9,7 +9,7 @@ from tqdm import tqdm
 import argparse
 #from utils_shtools import *
 import utils
-import sfl
+import sfloss as sfl
 np.random.seed(202108)
 
 parser = argparse.ArgumentParser(description='Relighting humans')
