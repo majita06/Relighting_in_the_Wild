@@ -26,10 +26,10 @@ model_path = args.model_path
 model.train_baseline = False
 model = model.CNNAE2ResNet(train=False)
 model.load_state_dict(torch.load(model_path))
-model = model.to("cuda")
+model = model.to('cuda')
 
 img_paths = sorted(glob(indir + '/*[!.mp4]'))
-print('Relighting by 1st stage...')
+print("Relighting by 1st stage...")
 for img_path in tqdm(img_paths):
     input_name = os.path.basename(img_path)
     human_name = input_name[:-len('+cluster00')]
@@ -45,7 +45,7 @@ for img_path in tqdm(img_paths):
 
         img_center_n = 2.*frame_1st-1.
         img_center_n = mask3*img_center_n  
-        img_center_n = torch.from_numpy(img_center_n.astype(np.float32)).clone().to("cuda").permute(2,0,1)[None,:,:]
+        img_center_n = torch.from_numpy(img_center_n.astype(np.float32)).clone().to('cuda').permute(2,0,1)[None,:,:]
         ##########################################
         res = model(img_center_n)
         ##########################################

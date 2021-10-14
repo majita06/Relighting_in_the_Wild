@@ -145,7 +145,7 @@ N_train_total = N_train_img
 N_test_img = len(test_fpath)
 N_test_light = len(test_light_fpath)
 N_test_total = N_test_img*N_test_light
-print('Preloading %d lights ...' % (N_train_light + N_test_light))
+print("Preloading %d lights ..." % (N_train_light + N_test_light))
 
 train_lights = []
 train_lights_basename = []
@@ -179,7 +179,7 @@ b_train=0
 
 
 for epoch in range(max_epoch):
-    print('epoch: %d\n  outdir: %s' % (epoch+1, outdir))
+    print("epoch: %d\n  outdir: %s" % (epoch+1, outdir))
     
     L_sum = 0.
     L_transport_sum = 0.

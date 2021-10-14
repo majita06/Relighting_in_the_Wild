@@ -26,7 +26,7 @@ model = model.CNNAE2ResNet(train=False)
 if model_path:
     model.load_state_dict(torch.load(model_path))
 model.train_dropout = False
-model.to("cuda")    
+model.to('cuda')    
 
 
 def infer_light_transport_albedo_and_light(img, mask):
@@ -36,9 +36,9 @@ def infer_light_transport_albedo_and_light(img, mask):
     mask3 = mask[None,:,:].repeat(3,axis=0).astype(np.float32)
     mask9 = mask[None,:,:].repeat(9,axis=0).astype(np.float32)
 
-    img = torch.from_numpy(img.astype(np.float32)).clone().to("cuda")
-    mask3 = torch.from_numpy(mask3.astype(np.float32)).clone().to("cuda")
-    mask9 = torch.from_numpy(mask9.astype(np.float32)).clone().to("cuda")
+    img = torch.from_numpy(img.astype(np.float32)).clone().to('cuda')
+    mask3 = torch.from_numpy(mask3.astype(np.float32)).clone().to('cuda')
+    mask9 = torch.from_numpy(mask9.astype(np.float32)).clone().to('cuda')
     img_batch = img[None,:,:,:].clone()
     mask3_batch = mask3[None,:,:,:].clone()
     mask9_batch = mask9[None,:,:,:].clone()
@@ -73,7 +73,7 @@ if not os.path.exists(outdir_path):
     os.makedirs(outdir_path)
 
 
-print('Infer frames...')
+print("Infer frames...")
 for i in tqdm(range(N_frames)):
     basename_frame = os.path.basename(frame_paths[i]).split('.')[0]
     img_orig = cv2.imread(frame_paths[i], cv2.IMREAD_COLOR).astype(np.float32)/255.

@@ -54,7 +54,7 @@ N_train_paths = len(train_paths)
 #N_test_paths = len(test_paths)
 
 for epoch in range(max_epochs):
-    print('epoch: %d\n  outdir: %s' % (epoch+1, outdir))
+    print("epoch: %d\n  outdir: %s" % (epoch+1, outdir))
 
     L_sum = 0
 

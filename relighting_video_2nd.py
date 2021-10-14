@@ -29,13 +29,13 @@ if not os.path.exists(outdir):
 
 model = model.CNNAE2ResNet(train=False)
 model.load_state_dict(torch.load(model_path))
-model = model.to("cuda")
+model = model.to('cuda')
 
 
 frame_paths = sorted(glob(indir + '/frame_*[!_mask].png'))
 mask_paths = sorted(glob('./result/infer_frames/' + human_name + '/frame_*_mask.png'))
 N_frames = len(frame_paths)
-print('Relighting by 2nd stage...')
+print("Relighting by 2nd stage...")
 for i in tqdm(range(N_frames)):
     frame_orig = cv2.imread(frame_paths[i],cv2.IMREAD_COLOR).astype(np.float32)/255.
     mask = cv2.imread(mask_paths[i],cv2.IMREAD_GRAYSCALE).astype(np.float32)/255.

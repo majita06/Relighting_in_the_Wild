@@ -31,7 +31,7 @@ sphere_transport,sphere_mask = utils.make_sphere()
 light = np.load(light_path)
 img_paths = sorted(glob(indir + '/*'))
 N_imgs = len(img_paths)
-print('Relighting by 1st stage...')
+print("Relighting by 1st stage...")
 for img_path in tqdm(img_paths):
     img_name = os.path.basename(img_path)
     save_basepath = outdir + '/' + img_name +'+'+ light_name

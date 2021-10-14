@@ -1,86 +1,15 @@
 import numpy as np
-import OpenEXR, Imath, array
-import cv2
 import torch
 import os
-from time import time
+
 from utils_shtools import *
 from pyshtools.rotate import djpi2, SHRotateRealCoef
 from pyshtools.expand import SHExpandDH
 
 
-
-def cpu_to_cuda(img):
-    img = torch.from_numpy(img).clone().to('cuda', dtype=torch.float)
-    return img
-
-def cuda_to_cpu(img):
-    img = img.to('cpu').detach().numpy().copy()
-    return img
-
-
-st = 0
-def start_time():
-    global st
-    torch.cuda.synchronize()
-    st = time()
-def end_time():
-    torch.cuda.synchronize()
-    t = time() - st
-    t_str = 'time: %02f sec' % t
-    if t >= 100:
-        t /= 60.
-        t_str = 'time: %02f min' % t
-        if t > 100:
-            t /= 60.
-            t_str = 'time: %02f h' % t
-    print(t_str)
-
-def rotation_y_map(envmap,theta):
-    _,w,_=envmap.shape
-    envmap_rot = np.zeros_like(envmap)
-    cc = int((theta/(2*np.pi))*w)
-    envmap_rot[:,:w-cc,:] = envmap[:,cc:,:].copy()
-    envmap_rot[:,w-cc:,:] = envmap[:,:cc,:].copy()
-    return envmap_rot
-
 def mkdir(path):
     if not os.path.exists(path):
         os.makedirs(path)
-
-def get_mask(exr_path):
-    img_exr = OpenEXR.InputFile(exr_path)
-    pix_type = Imath.PixelType(Imath.PixelType.FLOAT)
-    a_str= img_exr.channels('RGBA', pix_type)[3]
-    alpha = np.array(array.array('f', a_str))
-
-    data_win = img_exr.header()['dataWindow']
-    size = (data_win.max.x - data_win.min.x + 1,
-            data_win.max.y - data_win.min.y + 1)
-    mask = np.array(alpha)
-    mask = mask.reshape(size[1], size[0])
-    return mask
-
-def rot_vec(vec,theta):
-    rot_mat = [[np.cos(theta),-np.sin(theta)],
-                [np.sin(theta),np.cos(theta)]]
-    vec_aft = np.matmul(rot_mat,vec)
-    return vec_aft
-
-
-
-
-
-
-
-def env_rotate_torch(env,theta):
-    _,_,_,w=env.shape
-    env_rot = torch.zeros_like(env).to('cuda', dtype=torch.float)
-    cc = int((theta/(2*np.pi))*w)
-    env_rot[:,:,:,:w-cc] = env[:,:,:,cc:].clone()
-    env_rot[:,:,:,w-cc:] = env[:,:,:,:cc].clone()
-    return env_rot
-
 
 def trim(img, mask, padding_x=5, padding_y=5):
     mask_ids = np.where(mask>0)
@@ -88,15 +17,6 @@ def trim(img, mask, padding_x=5, padding_y=5):
     y_min = max(min(mask_ids[0])-padding_y, 0)
     x_max = min(max(mask_ids[1])+padding_x, img.shape[1])
     x_min = max(min(mask_ids[1])-padding_x, 0)
-    # if (y_max - y_min) % 2 == 1:
-    #     y_max -= 1
-    # if (x_max - x_min) % 2 == 1:
-    #     x_max -= 1
-        
-    # p = min(x_min,img.shape[1]-x_max)
-    # q=int(abs((y_max - y_min)-(x_max - x_min))/2)
-    # x_l=x_min-min(p,q)
-    # x_r=x_max+min(p,q)
     return img[y_min:y_max,x_min:x_max,:], mask[y_min:y_max,x_min:x_max]
 
 def square(img):
@@ -131,21 +51,6 @@ def square(img):
     sq = sq.astype(np.float32)
     return sq
 
-
-def load_checkpoint(model, optimizer, filename):
-    # Note: Input model & optimizer should be pre-defined.  This routine only updates their states.
-    start_epoch = 0
-    if os.path.isfile(filename):
-        print("=> loading checkpoint '{}'".format(filename))
-        checkpoint = torch.load(filename)
-        start_epoch = checkpoint['epoch']
-        model.load_state_dict(checkpoint['state_dict'])
-        optimizer.load_state_dict(checkpoint['optimizer'])
-        print("=> loaded checkpoint '{}' (epoch {})"
-                  .format(filename, checkpoint['epoch']))
-    else:
-        print("=> no checkpoint found at '{}'".format(filename))
-    return model, optimizer, start_epoch
 
 
 def white_mask(img,mask):
@@ -204,31 +109,6 @@ def sh_rotate(light,theta):
     light[:,1] = shtools_matrix2vec(rotL_matrix_G)
     light[:,2] = shtools_matrix2vec(rotL_matrix_B)  
     return light 
-
-def normalize_light(light3):
-    SH_DEGREE = 2
-    coeffs_matrix_R = shtools_sh2matrix(light3[:,0], SH_DEGREE)
-    tmp_envMap_R = MakeGridDH(coeffs_matrix_R, lmax=255, lmax_calc=SH_DEGREE, sampling=2, norm=4)
-    coeffs_matrix_G = shtools_sh2matrix(light3[:,1], SH_DEGREE)
-    tmp_envMap_G = MakeGridDH(coeffs_matrix_G, lmax=255, lmax_calc=SH_DEGREE, sampling=2, norm=4)
-    coeffs_matrix_B = shtools_sh2matrix(light3[:,2], SH_DEGREE)
-    tmp_envMap_B = MakeGridDH(coeffs_matrix_B, lmax=255, lmax_calc=SH_DEGREE, sampling=2, norm=4)
-    tmp_envMap = 0.299*tmp_envMap_R + 0.587*tmp_envMap_G + 0.114*tmp_envMap_B  # from opencv document
-    tmp_SH = pyshtools.expand.SHExpandDH(tmp_envMap, sampling=2, lmax_calc=2, norm=4)
-    light_gray = shtools_matrix2vec(tmp_SH)
-    if light_gray[0] > 1.0 or light_gray[0] < 0.5:
-        factor = (np.random.rand()*0.2 + 0.7)/light_gray[0] #np.random.rand()
-        for i in range(3):
-            light = light3[:,i]
-            coeffs_matrix = shtools_sh2matrix(light, SH_DEGREE)
-            tmp_envMap = MakeGridDH(coeffs_matrix, lmax=255, lmax_calc=SH_DEGREE, sampling=2, norm=4)
-            tmp_envMap = tmp_envMap*factor
-            tmp_SH = SHExpandDH(tmp_envMap, sampling=2, lmax_calc=2, norm=4)
-            light = shtools_matrix2vec(tmp_SH)
-            light3[:,i] = light
-
-    return light3
-
 
 def rmse_w_mask(a,b,mask):
     maskx = mask

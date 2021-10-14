@@ -24,7 +24,7 @@ model_path = args.model_path
 model = model.CNNAE2ResNet(train=False)
 if model_path:
     model.load_state_dict(torch.load(model_path))
-model.to("cuda")    
+model.to('cuda')    
 
 
 def infer_light_transport_albedo_and_light(img, mask):
@@ -34,9 +34,9 @@ def infer_light_transport_albedo_and_light(img, mask):
     mask3 = mask[None,:,:].repeat(3,axis=0).astype(np.float32)
     mask9 = mask[None,:,:].repeat(9,axis=0).astype(np.float32)
 
-    img = torch.from_numpy(img.astype(np.float32)).clone().to("cuda")
-    mask3 = torch.from_numpy(mask3.astype(np.float32)).clone().to("cuda")
-    mask9 = torch.from_numpy(mask9.astype(np.float32)).clone().to("cuda")
+    img = torch.from_numpy(img.astype(np.float32)).clone().to('cuda')
+    mask3 = torch.from_numpy(mask3.astype(np.float32)).clone().to('cuda')
+    mask9 = torch.from_numpy(mask9.astype(np.float32)).clone().to('cuda')
     img_batch = img[None,:,:,:].clone()
     mask3_batch = mask3[None,:,:,:].clone()
     mask9_batch = mask9[None,:,:,:].clone()
@@ -64,7 +64,7 @@ img_paths = sorted(glob(indir_path + '/*.jpg'))
 mask_paths = sorted(glob(indir_path + '/*_mask.png'))
 N_imgs = len(mask_paths)
 N_masks = len(mask_paths)
-print('Infer images...')
+print("Infer images...")
 for i in tqdm(range(N_imgs)):
     img_name = os.path.basename(img_paths[i])[:-len('.jpg')]
     outdir_path = args.out_dir + '/' + img_name
