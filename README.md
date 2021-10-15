@@ -24,7 +24,10 @@ sh ./scripts/demo_video.sh ./data/test_video/sample_frames
 The flicker-tolerant relighting results will be saved in `./demo/relighting_video/flicker_reduction`.
 Please terminate the training manually before noise appears in the result.
 
-### Train 2nd stage network
+### Training
+#### 1st stage network
+
+#### 2nd stage network
 1. Reconstruct the real photo dataset by a trained 1st stage model.
 ```
 python3 make_dataset_2nd.py --in_dir ./data/real_photo_dataset --out_dir_train ./data/train_human_2nd --out_dir_test ./data/test_human_2nd --model_path ./trained_models/model_1st.pth
