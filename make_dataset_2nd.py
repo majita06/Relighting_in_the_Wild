@@ -10,7 +10,6 @@ import argparse
 from tqdm import tqdm
 import utils
 
-
 parser = argparse.ArgumentParser(description='Relighting humans')
 parser.add_argument('--in_dir', '-i', default='./data/real_photo_dataset', help='Input directory')#'./data/real_photos'
 parser.add_argument('--out_dir_train', '-o', default='./data/train_human_2nd', help='Output directory')

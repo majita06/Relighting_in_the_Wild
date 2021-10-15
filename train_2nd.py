@@ -73,16 +73,16 @@ for epoch in range(max_epochs):
         input = 2.*rend_1st-1.
         input = mask3 * input 
 
-        orig = torch.from_numpy(orig).clone().to('cuda', dtype=torch.float)
-        rend_1st = torch.from_numpy(rend_1st).clone().to('cuda', dtype=torch.float)
-        input = torch.from_numpy(input).clone().to('cuda', dtype=torch.float)
+        orig = torch.from_numpy(orig).clone().to('cuda', dtype=torch.float32)
+        rend_1st = torch.from_numpy(rend_1st).clone().to('cuda', dtype=torch.float32)
+        input = torch.from_numpy(input).clone().to('cuda', dtype=torch.float32)
 
         orig = orig.permute(2,0,1)[None,:,:]
         rend_1st = rend_1st.permute(2,0,1)[None,:,:]
         input = input.permute(2,0,1)[None,:,:]
 
         #########################################
-        res = net(input)#[-1,1] mask:0
+        res = net(input)
         ##########################################
         result = rend_1st + res
 
@@ -144,7 +144,7 @@ for epoch in range(max_epochs):
             input = mask3 * input
 
             with torch.no_grad():
-                input = torch.from_numpy(input).clone().to('cuda', dtype=torch.float)
+                input = torch.from_numpy(input).clone().to('cuda', dtype=torch.float32)
                 input = input.permute(2,0,1)[None,:,:]
 
                 #########################################

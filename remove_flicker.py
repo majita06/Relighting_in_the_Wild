@@ -14,10 +14,10 @@ import utils
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--max_epoch",'-e', default=30, type=int, help="The max number of epochs for training")
-parser.add_argument("--in_dir",'-i',default='./test_video/91-kqBbzDIS', type=str, help="dir of input video")
-parser.add_argument("--processed",'-p', default='./result/relighting_video/2nd/91-kqBbzDIS+cluster88', type=str, help="dir of processed video")
-parser.add_argument("--light_dir",'-l', default='./result/relighting_video/1st/91-kqBbzDIS+cluster88', type=str, help="dir of processed video")
-parser.add_argument("--out_dir",'-o', default='./result/relighting_video/flicker_reduction', type=str, help="dir of input video")
+parser.add_argument("--in_dir",'-i',default='./data/test_video/sample_frames', type=str, help="dir of input video")
+parser.add_argument("--processed",'-p', default='./result/relighting_video/2nd/sample_frames+cluster88', type=str, help="dir of frames with flickering")
+parser.add_argument("--light_dir",'-l', default='./result/relighting_video/1st/sample_frames+cluster88', type=str, help="dir of light for relighting")
+parser.add_argument("--out_dir",'-o', default='./result/relighting_video/flicker_reduction', type=str, help="dir of output video")
 args = parser.parse_args()
 
 indir = args.in_dir
@@ -85,7 +85,6 @@ def prepare_paired_input(id, input_paths, input_light_paths, processed_paths):
 
     net_gt = cv2.imread(processed_paths[id],cv2.IMREAD_COLOR).astype(np.float32)/255.
     net_gt = 2. * net_gt - 1.
-    #net_gt = net_gt * mask3
     net_gt = torch.from_numpy(net_gt).clone()
     net_gt = net_gt.permute(2,0,1)[None,:,:]
 

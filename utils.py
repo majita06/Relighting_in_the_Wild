@@ -120,7 +120,7 @@ def rmse_w_mask(a,b,mask):
 
 def normal2SHbasis(normal_map):
     if not 'torch' in str(normal_map.dtype):
-        transport = np.empty((normal_map.shape[0], normal_map.shape[1], 9), dtype=np.float32)
+        transport = np.empty((normal_map.shape[0], normal_map.shape[1], 9), np.float32)
         normal_sqr = normal_map**2
         mask = np.sum(normal_sqr, axis=2) != 0.
         coeff = 3.141593 * 0.282095

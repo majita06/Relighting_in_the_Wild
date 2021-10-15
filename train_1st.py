@@ -7,29 +7,19 @@ import torch
 import torch.nn.functional as F
 from tqdm import tqdm
 import argparse
-#from utils_shtools import *
 import utils
 import sfloss as sfl
 np.random.seed(202108)
 
 parser = argparse.ArgumentParser(description='Relighting humans')
 parser.add_argument('--max_epochs', default=500, type=int, help='Max number of epochs')
-
-#TRAIN DATA(521) 
 parser.add_argument('--train_dir', '-train', default='./data/train_human_1st', help='Directory for training input images')
-
-#TEST DATA(20)
 parser.add_argument('--test_dir', '-t', default='./data/test_human_1st', help='Directory for test input images')
-
-#OUTPUT
 parser.add_argument('--out_dir', '-o', default='./result/output_1st', help='Directory for output images')
-
-#TRAIN LIGHT(2760)
 parser.add_argument('--train_light_dir', '-l0', default="./data/train_light", help='Light directory for training')
-
-#TEST LIGHT(10)
 parser.add_argument('--test_light_dir', '-l1', default="./data/test_light", help='Light directory for test')
 
+# weight
 parser.add_argument('--w_transport', '-tw0', default=1., type=float, help='')
 parser.add_argument('--w_albedo', '-tw1', default=1., type=float, help='')
 parser.add_argument('--w_light', '-tw2', default=1., type=float, help='')
@@ -106,9 +96,9 @@ def infer_light_transport_albedo_and_light(img, mask):
         mask3 = np.stack([mask,mask,mask],2)
         mask9 = np.stack([mask for i in range(9)],2)
 
-        input = torch.from_numpy(input).clone().to('cuda', dtype=torch.float).permute(2,0,1)[None,:,:,:]
-        mask3 = torch.from_numpy(mask3).clone().to('cuda', dtype=torch.float).permute(2,0,1)[None,:,:,:]
-        mask9 = torch.from_numpy(mask9).clone().to('cuda', dtype=torch.float).permute(2,0,1)[None,:,:,:]
+        input = torch.from_numpy(input).clone().to('cuda', dtype=torch.float32).permute(2,0,1)[None,:,:,:]
+        mask3 = torch.from_numpy(mask3).clone().to('cuda', dtype=torch.float32).permute(2,0,1)[None,:,:,:]
+        mask9 = torch.from_numpy(mask9).clone().to('cuda', dtype=torch.float32).permute(2,0,1)[None,:,:,:]
 
         input = mask3 * input
 
@@ -152,7 +142,7 @@ train_lights_basename = []
 for train_light_path in train_light_fpath:
     light_basename = os.path.basename(train_light_path)
     light = np.load(train_light_path)
-    light = torch.from_numpy(light).clone().to("cuda", dtype=torch.float)
+    light = torch.from_numpy(light).clone().to("cuda", dtype=torch.float32)
     train_lights.append(light)
     train_lights_basename.append(light_basename)
 
@@ -161,7 +151,7 @@ test_lights_basename = []
 for test_light_path in test_light_fpath:
     light_basename = os.path.basename(test_light_path)
     light = np.load(test_light_path)
-    light = torch.from_numpy(light).clone().to("cuda", dtype=torch.float)
+    light = torch.from_numpy(light).clone().to("cuda", dtype=torch.float32)
     test_lights.append(light)
     test_lights_basename.append(light_basename)
 
@@ -198,12 +188,12 @@ for epoch in range(max_epoch):
             mask3 = np.stack([mask,mask,mask],2)
             mask9 = np.stack([mask for i in range(9)],2)
             parsing = cv2.imread(train_fpath[i][:-len('_tex.png')]+'_parsing.png', cv2.IMREAD_GRAYSCALE).astype(np.float32) / 255.
-            albedo = torch.from_numpy(albedo).clone().to('cuda', dtype=torch.float)
-            transport = torch.from_numpy(transport).clone().to('cuda', dtype=torch.float)
-            mask = torch.from_numpy(mask).clone().to('cuda', dtype=torch.float)
-            mask3 = torch.from_numpy(mask3).clone().to('cuda', dtype=torch.float)
-            mask9 = torch.from_numpy(mask9).clone().to('cuda', dtype=torch.float)
-            parsing = torch.from_numpy(parsing).clone().to('cuda', dtype=torch.float)
+            albedo = torch.from_numpy(albedo).clone().to('cuda', dtype=torch.float32)
+            transport = torch.from_numpy(transport).clone().to('cuda', dtype=torch.float32)
+            mask = torch.from_numpy(mask).clone().to('cuda', dtype=torch.float32)
+            mask3 = torch.from_numpy(mask3).clone().to('cuda', dtype=torch.float32)
+            mask9 = torch.from_numpy(mask9).clone().to('cuda', dtype=torch.float32)
+            parsing = torch.from_numpy(parsing).clone().to('cuda', dtype=torch.float32)
 
             albedo = albedo.permute(2,0,1)[None,:,:,:]
             transport = transport.permute(2,0,1)[None,:,:,:]

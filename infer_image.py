@@ -1,4 +1,3 @@
-#baselineを使って反射率，伝達マップ，光源，推定(再構成も)
 
 from glob import glob
 import numpy as np
@@ -6,13 +5,12 @@ import cv2
 import os
 import model
 import torch
-import torch.nn.functional as F
 import argparse
 from tqdm import tqdm
 import utils
 
 
-parser = argparse.ArgumentParser(description='Relighting humans')
+parser = argparse.ArgumentParser()
 parser.add_argument('--in_dir', '-i', default='./data/test_image', help='Input directory')
 parser.add_argument('--out_dir', '-o', default='./result/infer_image', help='Output directory')
 parser.add_argument('--model_path', '-m', default='./trained_models/model_1st.pth', help='Model path')
