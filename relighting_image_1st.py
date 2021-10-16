@@ -17,7 +17,8 @@ args = parser.parse_args()
 
 indir = args.in_dir
 outdir = args.out_dir
-utils.mkdir(outdir)
+if not os.path.exists(outdir):
+    os.makedirs(outdir)
 light_path = args.light_path
 
 

@@ -7,10 +7,6 @@ from pyshtools.rotate import djpi2, SHRotateRealCoef
 from pyshtools.expand import SHExpandDH
 
 
-def mkdir(path):
-    if not os.path.exists(path):
-        os.makedirs(path)
-
 def trim(img, mask, padding_x=5, padding_y=5):
     mask_ids = np.where(mask>0)
     y_max = min(max(mask_ids[0])+padding_y, img.shape[0])
