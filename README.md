@@ -1,6 +1,6 @@
 # Relighting Humans in the Wild: Monocular Full-Body Human Relighting with Domain Adaptation
 
-![alt](https://raw.githubusercontent.com/majita06/Relighting_in_the_Wild/main/docs/teaser_pg.jpg?token=AO4IOE7YVEGNIPHNJ762723BNIVSU)
+![teaser](https://raw.githubusercontent.com/majita06/Relighting_in_the_Wild/main/docs/teaser_pg.jpg?token=AO4IOE7YVEGNIPHNJ762723BNIVSU)
 
 This code is an implementation of the following paper:
 
@@ -44,8 +44,6 @@ python3 make_dataset_2nd.py --in_dir ./data/real_photo_dataset --out_dir_train .
 python3 train_2nd.py --train_dir ./data/train_human_2nd --test_dir ./data/test_human_2nd --out_dir ./result/output_2nd
 ```
 
-
-
 ## Citation
 Please cite our paper if you find the code useful:
 ```
@@ -55,8 +53,8 @@ Please cite our paper if you find the code useful:
                Yuki Endo},
   title     = {Relighting Humans in the Wild: Monocular Full-Body Human Relighting with Domain Adaptation},
   journal   = {Comput. Graph. Forum},
-  volume    = {},
-  number    = {},
+  volume    = {40},
+  number    = {7},
   pages     = {--},
   year      = {2021},
 }

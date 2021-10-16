@@ -11,14 +11,14 @@ import utils
 import sfloss as sfl
 np.random.seed(202108)
 
-parser = argparse.ArgumentParser(description='Relighting humans')
+parser = argparse.ArgumentParser()
 parser.add_argument('--max_epochs', default=500, type=int, help='Max number of epochs')
 parser.add_argument('--train_dir', '-train', default='./data/train_human_1st', help='Directory for training input images')
 parser.add_argument('--test_dir', '-t', default='./data/test_human_1st', help='Directory for test input images')
 parser.add_argument('--out_dir', '-o', default='./result/output_1st', help='Directory for output images')
 parser.add_argument('--train_light_dir', '-l0', default="./data/train_light", help='Light directory for training')
 parser.add_argument('--test_light_dir', '-l1', default="./data/test_light", help='Light directory for test')
-
+parser.add_argument('--gpu', '-g', default=0, type=int, help='GPU ID (negative value means CPU)')
 # weight
 parser.add_argument('--w_transport', '-tw0', default=1., type=float, help='')
 parser.add_argument('--w_albedo', '-tw1', default=1., type=float, help='')
@@ -43,7 +43,9 @@ train_dir = args.train_dir
 test_dir = args.test_dir
 train_light_dir = args.train_light_dir
 test_light_dir = args.test_light_dir
+gpu = args.gpu
 outdir = args.out_dir
+
 w_transport = args.w_transport
 w_albedo = args.w_albedo
 w_light = args.w_light

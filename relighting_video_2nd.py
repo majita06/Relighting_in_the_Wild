@@ -15,9 +15,12 @@ parser = argparse.ArgumentParser(description='Relighting images')
 parser.add_argument('--in_dir','-i', default='./result/relighting_video/1st/91WwxuTSaYS+cluster88', help='relighting result by 1st stage')
 parser.add_argument('--out_dir','-o', default='./result/relighting_video/2nd', help='relighting result by 1st stage')
 parser.add_argument('--model_path', '-m', default='./trained_models/model_2nd.pth', help='model path')
+parser.add_argument('--gpu', '-g', default=0, type=int, help='GPU ID (negative value means CPU)')
 args = parser.parse_args()
 
 indir = args.in_dir
+gpu = args.gpu
+
 model_path = args.model_path
 input_name = os.path.basename(indir)
 human_name = input_name.split('+')[0]
@@ -27,13 +30,14 @@ if not os.path.exists(outdir):
 
 
 
-model = model.CNNAE2ResNet(train=False)
+model = model.CNNAE2ResNet(train=False,albedo_decoder_channels=3)
 model.load_state_dict(torch.load(model_path))
-model = model.to('cuda')
+if gpu>-1:
+    model.to('cuda')
 
 
 frame_paths = sorted(glob(indir + '/frame_*[!_mask].png'))
-mask_paths = sorted(glob('./result/infer_frames/' + human_name + '/frame_*_mask.png'))
+mask_paths = sorted(glob('./demo/infer_video/%s/frame_*_mask.png' % human_name))
 N_frames = len(frame_paths)
 print("Relighting by 2nd stage...")
 for i in tqdm(range(N_frames)):

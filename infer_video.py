@@ -16,8 +16,10 @@ parser = argparse.ArgumentParser(description='Relighting humans')
 parser.add_argument('--in_dir', '-i', default='./data/test_video/VIDEO_FRAME', help='Input directory')
 parser.add_argument('--out_dir', '-o', default='./result/infer_frame', help='Output directory')
 parser.add_argument('--model_path', '-m', default='./trained_models/model_1st.pth', help='Model path')
+parser.add_argument('--gpu', '-g', default=0, type=int, help='GPU ID (negative value means CPU)')
 args = parser.parse_args()
 indir_path = args.in_dir
+gpu = args.gpu
 
 
 
@@ -26,7 +28,8 @@ model = model.CNNAE2ResNet(train=False)
 if model_path:
     model.load_state_dict(torch.load(model_path))
 model.train_dropout = False
-model.to('cuda')    
+if gpu>-1:
+    model.to('cuda')    
 
 
 def infer_light_transport_albedo_and_light(img, mask):
@@ -36,9 +39,13 @@ def infer_light_transport_albedo_and_light(img, mask):
     mask3 = mask[None,:,:].repeat(3,axis=0).astype(np.float32)
     mask9 = mask[None,:,:].repeat(9,axis=0).astype(np.float32)
 
-    img = torch.from_numpy(img.astype(np.float32)).clone().to('cuda')
-    mask3 = torch.from_numpy(mask3.astype(np.float32)).clone().to('cuda')
-    mask9 = torch.from_numpy(mask9.astype(np.float32)).clone().to('cuda')
+    img = torch.from_numpy(img.astype(np.float32)).clone()
+    mask3 = torch.from_numpy(mask3.astype(np.float32)).clone()
+    mask9 = torch.from_numpy(mask9.astype(np.float32)).clone()
+    if gpu>-1:
+        img.to('cuda')
+        mask3.to('cuda')
+        mask9.to('cuda')
     img_batch = img[None,:,:,:].clone()
     mask3_batch = mask3[None,:,:,:].clone()
     mask9_batch = mask9[None,:,:,:].clone()

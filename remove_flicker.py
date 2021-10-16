@@ -18,9 +18,12 @@ parser.add_argument("--in_dir",'-i',default='./data/test_video/sample_frames', t
 parser.add_argument("--processed",'-p', default='./result/relighting_video/2nd/sample_frames+cluster88', type=str, help="dir of frames with flickering")
 parser.add_argument("--light_dir",'-l', default='./result/relighting_video/1st/sample_frames+cluster88', type=str, help="dir of light for relighting")
 parser.add_argument("--out_dir",'-o', default='./result/relighting_video/flicker_reduction', type=str, help="dir of output video")
+parser.add_argument('--gpu', '-g', default=0, type=int, help='GPU ID (negative value means CPU)')
 args = parser.parse_args()
 
 indir = args.in_dir
+gpu = args.gpu
+
 processed_dir = args.processed
 video_name =  os.path.basename(processed_dir)
 human_name = video_name.split('+')[0]
@@ -57,10 +60,13 @@ def Lp_loss(x, y):
 
 
 ###### Define model ###### 
-net = net.CNNAE2ResNet(in_channels=30).to('cuda')
+net = net.CNNAE2ResNet(in_channels=30)
 opt = torch.optim.Adam(net.parameters(), lr=0.0001, betas=(0.5, 0.999))
-VGG_19 = VGG19(requires_grad=False).to('cuda')
+VGG_19 = VGG19(requires_grad=False)
 ##########################
+if gpu>-1:
+    net.to('cuda')
+    VGG_19.to('cuda')
 
 
 def prepare_paired_input(id, input_paths, input_light_paths, processed_paths):
@@ -133,8 +139,9 @@ for epoch in range(1,maxepoch):
         
         net_in,net_gt = data_in_memory[id] 
         
-        net_in = net_in.to('cuda')
-        net_gt = net_gt.to('cuda')
+        if gpu>-1:
+            net_in.to('cuda')
+            net_gt.to('cuda')
         ########################
         prediction = net(net_in)
         ########################
@@ -161,8 +168,9 @@ for epoch in range(1,maxepoch):
         for id in range(N_frames):
 
             net_in,net_gt = data_in_memory[id]
-            net_in = net_in.to('cuda')
-            net_gt = net_gt.to('cuda')
+            if gpu>-1:
+                net_in.to('cuda')
+                net_gt.to('cuda')
             #############################
             with torch.no_grad():
                 prediction = net(net_in) 
