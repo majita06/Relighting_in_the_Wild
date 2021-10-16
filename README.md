@@ -9,6 +9,9 @@ Daichi Tajima, Yoshihiro Kanamori, Yuki Endo: "Relighting Humans in the Wild: Mo
 2. PyTorch(>=1.5)
 
 ## Demo
+1. Download our [two pre-trained models](https://drive.google.com/drive/folders/1q4dxQxM4hZ19Eo2e4YF-F197mjScfeT8?usp=sharing).
+2. Make a "trained_models" directory in the parent directory and put "model_1st.pth" and "model_2nd.pth".
+
 ### Applying to images
 To relight images under `./data/test_images`, run the following code:
 ```
@@ -24,6 +27,7 @@ sh ./scripts/demo_video.sh ./data/test_video/sample_frames
 ```
 The flicker-tolerant relighting results will be saved in `./demo/relighting_video/flicker_reduction`.
 Please terminate the training manually before noise appears in the result.
+NOTE: If you want to change the light for relighting, please edit the script directly.
 
 ### Training
 #### 1st stage network
