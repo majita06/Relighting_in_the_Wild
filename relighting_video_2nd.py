@@ -28,8 +28,6 @@ outdir = args.out_dir + '/' + input_name
 if not os.path.exists(outdir):
     os.makedirs(outdir)
 
-
-
 model = model.CNNAE2ResNet(train=False,albedo_decoder_channels=3)
 model.load_state_dict(torch.load(model_path))
 if gpu>-1:
