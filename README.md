@@ -14,7 +14,8 @@ To relight images under `./data/test_images`, run the following code:
 ```
 sh ./scripts/demo_image.sh ./data/sample_images
 ```
-The relighting results will be saved in `./demo/relighting_image/2nd` .
+The relighting results will be saved in `./demo/relighting_image/2nd`.
+NOTE: If you want to change the light for relighting, please edit the script directly.
 
 ### Applying to videos
 To relight video frames under `./data/test_video/sample_frames`, run the following code:
