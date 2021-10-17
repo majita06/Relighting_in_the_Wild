@@ -1,6 +1,6 @@
 # Relighting Humans in the Wild: Monocular Full-Body Human Relighting with Domain Adaptation
 
-![teaser](https://raw.githubusercontent.com/majita06/Relighting_in_the_Wild/main/docs/teaser_pg.jpg?token=AO4IOE7QQAIXP2HVNDM4UD3BNOEPO)
+![teaser](https://github.com/majita06/Relighting_in_the_Wild/blob/main/docs/teaser_pg.jpg)
 
 This code is an implementation of the following paper:
 
