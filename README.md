@@ -34,8 +34,8 @@ NOTE: If you want to change the light for relighting, please edit the script dir
 ### Training
 #### 1st stage network
 1. 
-  - Put binary masks("XXX_mask.png"), albedo maps("XXX_tex.png"), transport maps("XXX_transport.npz") and skin masks("XXX_parsing.png") from 3D models in `./data/train_human_1st` and `./data/test_human_1st`．
-  - Put SH light("YYY.npy") from environment maps in `./data/train_light_1st` and `./data/test_light_1st`．
+  - Put binary masks ("XXX_mask.png"), albedo maps ("XXX_tex.png"), transport maps ("XXX_transport.npz") and skin masks ("XXX_parsing.png") from 3D models in `./data/train_human_1st` and `./data/test_human_1st`．
+  - Put SH light ("YYY.npy") from environment maps in `./data/train_light_1st` and `./data/test_light_1st`．
 2. 
 Run train_1st.py
 ```
