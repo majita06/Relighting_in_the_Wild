@@ -29,7 +29,7 @@ if gpu>-1:
 
 img_paths = sorted(glob(indir + '/*[!.mp4]'))
 print("Relighting by 2nd stage...")
-for img_path in tqdm(img_paths):
+for img_path in tqdm(img_paths,ascii=True):
     input_name = os.path.basename(img_path)
     human_name = input_name.split('+')[0]
     outdir = args.out_dir + '/' + input_name

@@ -33,7 +33,7 @@ N_frames = len(mask_paths)
 N_rotations = 128
 theta = 2*np.pi/N_rotations
 print("Relighting by 1st stage...")
-for i in tqdm(range(N_frames)):
+for i in tqdm(range(N_frames),ascii=True):
     frame_name = os.path.basename(mask_paths[i])[:-len('_mask.png')]
     albedo = cv2.imread(indir +'/'+frame_name+'_albedo.png', cv2.IMREAD_COLOR).astype(np.float32)/255.
     transport = np.load(indir +'/'+frame_name+'_transport.npz')['T']

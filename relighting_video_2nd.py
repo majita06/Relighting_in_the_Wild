@@ -36,7 +36,7 @@ frame_paths = sorted(glob(indir + '/frame_*[!_mask].png'))
 mask_paths = sorted(glob('./demo/infer_video/%s/frame_*_mask.png' % human_name))
 N_frames = len(frame_paths)
 print("Relighting by 2nd stage...")
-for i in tqdm(range(N_frames)):
+for i in tqdm(range(N_frames),ascii=True):
     frame_orig = cv2.imread(frame_paths[i],cv2.IMREAD_COLOR).astype(np.float32)/255.
     mask = cv2.imread(mask_paths[i],cv2.IMREAD_GRAYSCALE).astype(np.float32)/255.
     
