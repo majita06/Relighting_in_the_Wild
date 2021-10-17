@@ -131,6 +131,7 @@ if not os.path.isdir(save_training_basepath):
 initialize_weights(net)
 step = 0
 ###### start train ######
+print('Reducing flickering...')
 for epoch in range(1,maxepoch):
     save_basepath = '%s/%04d' % (outdir, epoch)
     if not os.path.exists(save_basepath):
