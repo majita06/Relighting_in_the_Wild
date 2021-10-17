@@ -130,17 +130,17 @@ if not os.path.isdir(save_training_basepath):
 # model re-initialization 
 initialize_weights(net)
 step = 0
-###### start train ######
+
 print('Reducing flickering...')
 for epoch in range(1,maxepoch):
     save_basepath = '%s/%04d' % (outdir, epoch)
     if not os.path.exists(save_basepath):
         os.makedirs(save_basepath)
+    ###### start train ######
     pbar = tqdm(total=N_frames, desc="Processing epoch %d" % epoch, ascii=True)
     for id in range(N_frames): 
         
         net_in,net_gt = data_in_memory[id] 
-        
         if gpu>-1:
             net_in = net_in.to('cuda')
             net_gt = net_gt.to('cuda')
@@ -171,7 +171,7 @@ for epoch in range(1,maxepoch):
         net_in,net_gt = data_in_memory[id]
         if gpu>-1:
             net_in = net_in.to('cuda')
-            net_in = net_gt.to('cuda')
+            net_gt = net_gt.to('cuda')
         #############################
         with torch.no_grad():
             prediction = net(net_in) 
