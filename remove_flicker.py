@@ -59,7 +59,7 @@ def Lp_loss(x, y):
 
 
 ###### Define model ###### 
-net = net.CNNAE2ResNet(in_channels=30,,albedo_decoder_channels=3)
+net = net.CNNAE2ResNet(in_channels=30,albedo_decoder_channels=3)
 opt = torch.optim.Adam(net.parameters(), lr=0.0001, betas=(0.5, 0.999))
 VGG_19 = VGG19(requires_grad=False)
 ##########################
