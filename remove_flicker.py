@@ -17,11 +17,13 @@ parser.add_argument("--in_dir",'-i',default='./data/test_video/sample_frames', t
 parser.add_argument("--processed",'-p', default='./result/relighting_video/2nd/sample_frames+cluster88', type=str, help="dir of frames with flickering")
 parser.add_argument("--light_dir",'-l', default='./result/relighting_video/1st/sample_frames+cluster88', type=str, help="dir of light for relighting")
 parser.add_argument("--out_dir",'-o', default='./result/relighting_video/flicker_reduction', type=str, help="dir of output video")
-parser.add_argument('--gpu', '-g', default=0, type=int, help='GPU ID (negative value means CPU)')
+parser.add_argument('--gpu', '-g', default="0", type=str, help='GPU ID (negative value means CPU)')
 args = parser.parse_args()
 
 indir = args.in_dir
 gpu = args.gpu
+if gpu>-1:
+    os.environ["CUDA_VISIBLE_DEVICES"]=gpu
 
 processed_dir = args.processed
 video_name =  os.path.basename(processed_dir)

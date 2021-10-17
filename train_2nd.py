@@ -19,7 +19,7 @@ parser.add_argument('--max_epochs', default=200, type=int, help='Max number of e
 parser.add_argument('--train_dir', '-train', default='./data/train_human_2nd', help='Directory for training input images')
 parser.add_argument('--test_dir', '-test', default='./data/test_human_2nd', help='Directory for training input images')
 parser.add_argument('--out_dir', '-o', default='./result/output_2nd', help='Directory for output images')
-parser.add_argument('--gpu', '-g', default=0, type=int, help='GPU ID (negative value means CPU)')
+parser.add_argument('--gpu', '-g', default="0", type=str, help='GPU ID (negative value means CPU)')
 args = parser.parse_args()
 
 
@@ -28,7 +28,8 @@ train_dir = args.train_dir
 test_dir = args.test_dir
 outdir = args.out_dir
 gpu = args.gpu
-
+if gpu>-1:
+    os.environ["CUDA_VISIBLE_DEVICES"]=gpu
 
 if not os.path.exists(outdir):
     os.makedirs(outdir)

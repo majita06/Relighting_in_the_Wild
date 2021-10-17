@@ -13,11 +13,13 @@ parser.add_argument('--in_dir', '-i', default='./data/real_photo_dataset', help=
 parser.add_argument('--out_dir_train', '-o', default='./data/train_human_2nd', help='Output directory')
 parser.add_argument('--out_dir_test', '-o', default='./data/test_human_2nd', help='Output directory')
 parser.add_argument('--model_path', '-m', default='./trained_models/model_1st.pth', help='Model path')
-parser.add_argument('--gpu', '-g', default=0, type=int, help='GPU ID (negative value means CPU)')
+parser.add_argument('--gpu', '-g', default="0", type=str, help='GPU ID (negative value means CPU)')
 args = parser.parse_args()
 
 indir_path = args.in_dir
 gpu = args.gpu
+if gpu>-1:
+    os.environ["CUDA_VISIBLE_DEVICES"]=gpu
 
 test_data_list_path = './test_human_2nd_list.txt'
 with open(test_data_list_path,'r') as f:

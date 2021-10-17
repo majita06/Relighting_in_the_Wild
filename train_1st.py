@@ -18,7 +18,7 @@ parser.add_argument('--test_dir', '-t', default='./data/test_human_1st', help='D
 parser.add_argument('--out_dir', '-o', default='./result/output_1st', help='Directory for output images')
 parser.add_argument('--train_light_dir', '-l0', default="./data/train_light", help='Light directory for training')
 parser.add_argument('--test_light_dir', '-l1', default="./data/test_light", help='Light directory for test')
-parser.add_argument('--gpu', '-g', default=0, type=int, help='GPU ID (negative value means CPU)')
+parser.add_argument('--gpu', '-g', default="0", type=str, help='GPU ID (negative value means CPU)')
 # weight
 parser.add_argument('--w_transport', '-tw0', default=1., type=float, help='')
 parser.add_argument('--w_albedo', '-tw1', default=1., type=float, help='')
@@ -44,6 +44,8 @@ test_dir = args.test_dir
 train_light_dir = args.train_light_dir
 test_light_dir = args.test_light_dir
 gpu = args.gpu
+if gpu>-1:
+    os.environ["CUDA_VISIBLE_DEVICES"]=gpu
 outdir = args.out_dir
 
 w_transport = args.w_transport
