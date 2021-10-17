@@ -7,8 +7,10 @@ This code is an implementation of the following paper:
 Daichi Tajima, Yoshihiro Kanamori, Yuki Endo: "Relighting Humans in the Wild: Monocular Full-Body Human Relighting with Domain Adaptation," Computer Graphics Forum (Proc. of Pacific Graphics 2021), 2021. [[Project]](http://cgg.cs.tsukuba.ac.jp/~tajima/pub/relighting_in_the_wild/)[[PDF]](http://cgg.cs.tsukuba.ac.jp/~tajima/pub/relighting_in_the_wild/pdf/tajima_PG21.pdf)
 
 ## Prerequisites
-1. Python3
-2. PyTorch(>=1.5)
+Run the following code to install all pip packages.
+```
+pip3 install -r requirements.txt
+```
 
 ## Demo
 1. Download our [two pre-trained models](https://drive.google.com/drive/folders/1q4dxQxM4hZ19Eo2e4YF-F197mjScfeT8?usp=sharing).
