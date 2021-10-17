@@ -1,0 +1,6 @@
+numpy>=1.21.1
+opencv-python>=4.5.3.56
+torch>=1.8.1+cu111
+scikit-image>=0.17.2
+torch_optimizer>=0.1.0
+pyshtools>=4.6.2
