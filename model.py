@@ -168,7 +168,7 @@ class CNNAE2ResNet(nn.Module):
         if train_baseline == True:
             hb = self.sig(hb)
         else:
-            hb = self.tanh(hb)
+            pass
         
         if train_baseline == True:
             hc = torch.cat((hc5, hra, hrb),1)
