@@ -29,8 +29,8 @@ To relight video frames under `./data/test_video/sample_frames`, run the followi
 ```
 sh ./scripts/demo_video.sh ./data/test_video/sample_frames
 ```
-The flicker-tolerant relighting results will be saved in `./demo/relighting_video/flicker_reduction`.
-Please terminate the training manually before noise appears in the result.
+You can confirm the output video for each epoch in the ./demo/relighting_video/flicker_reduction directory.
+Please terminate the training manually (by Ctrl-c) before noise appears in the result. For the test video, we stopped at 11 epoch.
 NOTE: If you want to change the light for relighting, please edit the script directly.
 
 ### Training

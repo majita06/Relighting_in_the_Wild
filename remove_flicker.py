@@ -12,7 +12,7 @@ import cv2
 import utils
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--max_epoch",'-e', default=30, type=int, help="The max number of epochs for training")
+parser.add_argument("--max_epoch",'-e', default=20, type=int, help="The max number of epochs for training")
 parser.add_argument("--in_dir",'-i',default='./data/test_video/sample_frames', type=str, help="dir of input video")
 parser.add_argument("--processed",'-p', default='./result/relighting_video/2nd/sample_frames+cluster88', type=str, help="dir of frames with flickering")
 parser.add_argument("--light_dir",'-l', default='./result/relighting_video/1st/sample_frames+cluster88', type=str, help="dir of light for relighting")
@@ -62,6 +62,7 @@ def Lp_loss(x, y):
 
 ###### Define model ###### 
 net = net.CNNAE2ResNet(in_channels=30,albedo_decoder_channels=3)
+#net.train_dropout = False
 opt = torch.optim.Adam(net.parameters(), lr=0.0001, betas=(0.5, 0.999))
 VGG_19 = VGG19(requires_grad=False)
 ##########################
@@ -78,8 +79,8 @@ def prepare_paired_input(id, input_paths, input_light_paths, processed_paths):
     mask = utils.square(mask)
     mask = cv2.resize(mask,(1024,1024))
     mask3 = np.stack([mask,mask,mask],2)
-    net_img_in = net_img_in * mask3
     net_img_in = 2. * net_img_in - 1.
+    net_img_in = net_img_in * mask3
 
     net_img_in = torch.from_numpy(net_img_in).clone()
     net_img_in = net_img_in.permute(2,0,1)[None,:,:]
@@ -92,10 +93,11 @@ def prepare_paired_input(id, input_paths, input_light_paths, processed_paths):
 
     net_gt = cv2.imread(processed_paths[id],cv2.IMREAD_COLOR).astype(np.float32)/255.
     net_gt = 2. * net_gt - 1.
+    net_gt = net_gt * mask3
     net_gt = torch.from_numpy(net_gt).clone()
     net_gt = net_gt.permute(2,0,1)[None,:,:]
 
-    return net_in, net_gt
+    return net_in, net_gt, mask3
 
 # some functions 
 def initialize_weights(model):
@@ -119,9 +121,8 @@ N_frames =len(input_paths)
 
 data_in_memory = [None] * N_frames   # [None, None, ..., None]   
 for id in range(min(len(input_paths), len(processed_paths))):                           
-    net_in,net_gt = prepare_paired_input(id, input_paths,input_light_paths,processed_paths) 
-    data_in_memory[id] = [net_in,net_gt]    
-
+    net_in,net_gt,mask3 = prepare_paired_input(id, input_paths,input_light_paths,processed_paths) 
+    data_in_memory[id] = [net_in,net_gt,mask3]    
 
 #######################
 save_training_basepath = '%s/training' % outdir
@@ -130,23 +131,26 @@ if not os.path.isdir(save_training_basepath):
 # model re-initialization 
 initialize_weights(net)
 step = 0
-
 print('Reducing flickering...')
 for epoch in range(1,maxepoch):
     save_basepath = '%s/%04d' % (outdir, epoch)
     if not os.path.exists(save_basepath):
         os.makedirs(save_basepath)
-    ###### start train ######
+    ###### train ######
+    
+    net.train_dropout = True
     pbar = tqdm(total=N_frames, desc="Processing epoch %d" % epoch, ascii=True)
     for id in range(N_frames): 
-        
-        net_in,net_gt = data_in_memory[id] 
+        net_in,net_gt,mask3 = data_in_memory[id]
+        mask3_torch = torch.from_numpy(mask3).permute(2,0,1)[None,:,:]
         if gpu>-1:
             net_in = net_in.to('cuda')
             net_gt = net_gt.to('cuda')
+            mask3_torch = mask3_torch.to('cuda')
         ########################
         prediction = net(net_in)
         ########################
+        prediction = prediction * mask3_torch
         L = Lp_loss(prediction, net_gt)
 
         opt.zero_grad()
@@ -159,40 +163,40 @@ for epoch in range(1,maxepoch):
             net_gt = net_gt.data[0].permute(1,2,0).to('cpu').detach().numpy()
             prediction = prediction.data[0].permute(1,2,0).to('cpu').detach().numpy()
             cv2.imwrite(save_training_basepath + '/step%06d_%06d.jpg' % (step, id), 
-                        np.uint8(np.concatenate([(net_in[:,:,:3]+1.)/2., (prediction+1.)/2., (net_gt+1.)/2.], axis=1).clip(0,1) * 255.))  
+                        np.uint8(np.concatenate([mask3*(net_in[:,:,:3]+1.)/2., mask3*(net_gt+1.)/2., mask3*(prediction+1.)/2.],1).clip(0,1) * 255.))  
         pbar.update(1)
     pbar.close()    
-
+    ##################
     ###### test ######
-    net.train_dropout = False
-    pbar = tqdm(total=N_frames, desc='test', ascii=True)
-    for id in range(N_frames):
+    if epoch > 5:
+        net.train_dropout = False
+        pbar = tqdm(total=N_frames, desc='test', ascii=True)
+        for id in range(N_frames):
 
-        net_in,net_gt = data_in_memory[id]
-        if gpu>-1:
-            net_in = net_in.to('cuda')
-            net_gt = net_gt.to('cuda')
-        #############################
-        with torch.no_grad():
-            prediction = net(net_in) 
-        #############################
-        net_in = net_in.data[0].permute(1,2,0).to('cpu').detach().numpy()
-        net_gt = net_gt.data[0].permute(1,2,0).to('cpu').detach().numpy()
-        prediction = prediction.data[0].permute(1,2,0).to('cpu').detach().numpy()
+            net_in,net_gt,mask3 = data_in_memory[id]
+            if gpu>-1:
+                net_in = net_in.to('cuda')
+                net_gt = net_gt.to('cuda')
+            #############################
+            with torch.no_grad():
+                prediction = net(net_in) 
+            #############################
+            net_in = net_in.data[0].permute(1,2,0).to('cpu').detach().numpy()
+            net_gt = net_gt.data[0].permute(1,2,0).to('cpu').detach().numpy()
+            prediction = prediction.data[0].permute(1,2,0).to('cpu').detach().numpy()
 
-        cv2.imwrite(save_basepath + '/predictions_%05d.jpg' % id, 
-            np.uint8(np.concatenate([(net_in[:,:,:3]+1.)/2., (net_gt+1.)/2.,(prediction+1.)/2.],1).clip(0,1) * 255.))
-        cv2.imwrite(save_basepath + '/out_main_%05d.jpg' % id, 
-            np.uint8(((prediction+1.)/2).clip(0,1) * 255.))
-        pbar.update(1)
-    pbar.close()
+            cv2.imwrite(save_basepath + '/predictions_%05d.jpg' % id, 
+                np.uint8(np.concatenate([mask3*(net_in[:,:,:3]+1.)/2., mask3*(net_gt+1.)/2., mask3*(prediction+1.)/2.],1).clip(0,1) * 255.))
+            cv2.imwrite(save_basepath + '/out_main_%05d.jpg' % id, 
+                np.uint8((mask3*(prediction+1.)/2).clip(0,1) * 255.))
+            pbar.update(1)
+        pbar.close()
+
+        video_path = save_basepath + '.mp4'    
+        files_path = save_basepath + '/out_main_%05d.jpg'
+        os.system('ffmpeg -y -r 30 -i ' + files_path + ' -vcodec libx264 -pix_fmt yuv420p -r 60 -loglevel fatal ' + video_path)
+        video_path = save_basepath + '_compare.mp4'    
+        files_path = save_basepath + '/predictions_%05d.jpg'
+        os.system('ffmpeg -y -r 30 -i ' + files_path + ' -vcodec libx264 -pix_fmt yuv420p -r 60 -loglevel fatal ' + video_path)
     ################
-
-    video_path = save_basepath + '.mp4'    
-    files_path = save_basepath + '/out_main_%05d.jpg'
-    os.system('ffmpeg -y -r 30 -i ' + files_path + ' -vcodec libx264 -pix_fmt yuv420p -r 60 -loglevel fatal ' + video_path)
-    video_path = save_basepath + '_compare.mp4'    
-    files_path = save_basepath + '/predictions_%05d.jpg'
-    os.system('ffmpeg -y -r 30 -i ' + files_path + ' -vcodec libx264 -pix_fmt yuv420p -r 60 -loglevel fatal ' + video_path)
-    net.train_dropout = True
 
