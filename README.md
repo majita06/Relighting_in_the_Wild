@@ -1,7 +1,6 @@
 # Relighting Humans in the Wild: Monocular Full-Body Human Relighting with Domain Adaptation
 
-![teaser](https://raw.githubusercontent.com/majita06/Relighting_in_the_Wild/main/docs/teaser_pg.jpg?token=AO4IOE7YVEGNIPHNJ762723BNIVSU)
-
+![teaser](https://raw.githubusercontent.com/majita06/Relighting_in_the_Wild/main/docs/teaser_pg.jpg?token=AO4IOE7QQAIXP2HVNDM4UD3BNOEPO)
 This code is an implementation of the following paper:
 
 Daichi Tajima, Yoshihiro Kanamori, Yuki Endo: "Relighting Humans in the Wild: Monocular Full-Body Human Relighting with Domain Adaptation," Computer Graphics Forum (Proc. of Pacific Graphics 2021), 2021. [[Project]](http://cgg.cs.tsukuba.ac.jp/~tajima/pub/relighting_in_the_wild/)[[PDF]](http://cgg.cs.tsukuba.ac.jp/~tajima/pub/relighting_in_the_wild/pdf/tajima_PG21.pdf)
