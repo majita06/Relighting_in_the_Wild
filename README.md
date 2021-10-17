@@ -44,6 +44,7 @@ python3 train_1st.py --train_dir ./data/train_human_1st --test_dir ./data/test_h
 #### 2nd stage network
 1. 
 Reconstruct the real photo dataset by a trained 1st stage model.
+NOTE: Dataset will be published soon. [Download](https://drive.google.com/drive/folders/1I-dKf7nxxHYSBNGMFSuqvEQz6pLv-0YN?usp=sharing)
 ```
 python3 make_dataset_2nd.py --in_dir ./data/real_photo_dataset --out_dir_train ./data/train_human_2nd --out_dir_test ./data/test_human_2nd --model_path ./trained_models/model_1st.pth
 ```
