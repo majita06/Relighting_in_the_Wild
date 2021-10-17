@@ -47,11 +47,11 @@ for img_path in tqdm(img_paths):
         img_center_n = mask3*img_center_n  
         img_center_n = torch.from_numpy(img_center_n.astype(np.float32)).clone().permute(2,0,1)[None,:,:]
         if gpu>-1:
-            img_center_n.to('cuda')
+            img_center_n
         ##########################################
         res = model(img_center_n)
         ##########################################
-        res = res.data[0].permute(1,2,0).to("cpu").detach().numpy().copy()
+        res = res.data[0].permute(1,2,0).to('cpu').detach().numpy().copy()
         result = (frame_1st + res).clip(0.,1.)
         
         result_trim,mask_trim = utils.trim(result,mask)

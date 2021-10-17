@@ -43,9 +43,9 @@ def infer_light_transport_albedo_and_light(img, mask):
     mask3 = torch.from_numpy(mask3.astype(np.float32)).clone()
     mask9 = torch.from_numpy(mask9.astype(np.float32)).clone()
     if gpu>-1:
-        img.to('cuda')
-        mask3.to('cuda')
-        mask9.to('cuda')
+        img = img.to('cuda')
+        mask3 = mask3.to('cuda')
+        mask9 = mask9.to('cuda')
     img_batch = img[None,:,:,:].clone()
     mask3_batch = mask3[None,:,:,:].clone()
     mask9_batch = mask9[None,:,:,:].clone()

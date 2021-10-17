@@ -140,8 +140,8 @@ for epoch in range(1,maxepoch):
         net_in,net_gt = data_in_memory[id] 
         
         if gpu>-1:
-            net_in.to('cuda')
-            net_gt.to('cuda')
+            net_in = net_in.to('cuda')
+            net_gt = net_gt.to('cuda')
         ########################
         prediction = net(net_in)
         ########################
@@ -168,8 +168,8 @@ for epoch in range(1,maxepoch):
 
         net_in,net_gt = data_in_memory[id]
         if gpu>-1:
-            net_in.to('cuda')
-            net_gt.to('cuda')
+            net_in = net_in.to('cuda')
+            net_in = net_gt.to('cuda')
         #############################
         with torch.no_grad():
             prediction = net(net_in) 

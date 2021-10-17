@@ -50,14 +50,16 @@ for i in tqdm(range(N_frames)):
     mask3 = np.stack([mask for i in range(3)],2)
     img_center_n = 2.*frame_orig-1.
     img_center_n = mask3*img_center_n  
-    img_center_n = torch.from_numpy(img_center_n.astype(np.float32)).clone().to("cuda").permute(2,0,1)[None,:,:]
+    img_center_n = torch.from_numpy(img_center_n.astype(np.float32)).clone().permute(2,0,1)[None,:,:]
+    if gpu>-1:
+        img_center_n = img_center_n.to('cuda')
     ##########################################
     res = model(img_center_n)
     ##########################################
-    res = res.data[0].permute(1,2,0).to("cpu").detach().numpy().copy()
+    res = res.data[0].permute(1,2,0).to('cpu').detach().numpy().copy()
 
-    result = (frame_orig + res).clip(0.,1.)
-    cv2.imwrite(outdir + ('/frame_%03d.png' % i), 255*result*mask3)
+    result = frame_orig + res
+    cv2.imwrite(outdir + ('/frame_%03d.png' % i), 255*result.clip(0.,1.)*mask3)
 
 video_path = outdir + '.mp4'    
 files_path = outdir + '/frame_%03d.png'

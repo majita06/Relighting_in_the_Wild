@@ -102,7 +102,7 @@ for epoch in range(max_epochs):
     pbar.close()
     scheduler.step()
 
-    # raw_L = (L_sum/N_train_paths).to("cpu").item()
+    # raw_L = (L_sum/N_train_paths).to('cpu').item()
 
     # with open(loss_train_txt,"a") as f:
     #     f.write(str(epoch) + " ")
@@ -153,12 +153,10 @@ for epoch in range(max_epochs):
 
                 #########################################
                 res = net(input)
-                res = res.data[0].permute(1,2,0)
-                res = res.to("cpu").detach().numpy().copy()
-                res3 = np.stack([res,res,res],2)
                 ##########################################
-                result = (rend_1st + res3).clip(0,1)
-                result = mask3 * result
+                res = res.data[0].permute(1,2,0).to('cpu').detach().numpy().copy()
+                result = rend_1st + res
+                result = result.clip(0,1)*mask3
                 
                 rmse_sum += utils.rmse_w_mask(result,orig,mask)
                 result_gray = cv2.cvtColor(result,cv2.COLOR_BGR2GRAY)

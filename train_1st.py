@@ -89,7 +89,8 @@ sf_loss = sfl.SpatialFrequencyLoss(num_channels=3)
 
 model = model.CNNAE2ResNet()
 opt = torch.optim.Adam(model.parameters(),lr=0.0002, betas=(0.5, 0.999))
-model = model.to("cuda")
+if gpu>-1:
+    model.to('cuda')
 torch.backends.cudnn.benchmark = True
 
 def infer_light_transport_albedo_and_light(img, mask):
@@ -287,10 +288,10 @@ for epoch in range(max_epoch):
     pbar.close()
 
 
-    raw_L_sum = (L_sum / N_train_total).to("cpu").item()
-    raw_L_transport = (L_transport_sum / N_train_total).to("cpu").item()
-    raw_L_albedo = (L_albedo_sum / N_train_total).to("cpu").item()
-    raw_L_light = (L_light_sum / N_train_total).to("cpu").item()
+    raw_L_sum = (L_sum / N_train_total).to('cpu').item()
+    raw_L_transport = (L_transport_sum / N_train_total).to('cpu').item()
+    raw_L_albedo = (L_albedo_sum / N_train_total).to('cpu').item()
+    raw_L_light = (L_light_sum / N_train_total).to('cpu').item()
 
 
     with open(loss_train_txt,"a") as f:
