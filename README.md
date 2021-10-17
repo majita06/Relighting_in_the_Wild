@@ -14,7 +14,7 @@ pip3 install -r requirements.txt
 
 ## Demo
 1. Make a "trained_models" directory in the parent directory.
-1. Download our [two pre-trained models](https://drive.google.com/drive/folders/1q4dxQxM4hZ19Eo2e4YF-F197mjScfeT8?usp=sharing) and put "model_1st.pth" and "model_2nd.pth" into the "trained_models" directory.
+2. Download our [two pre-trained models](https://drive.google.com/drive/folders/1q4dxQxM4hZ19Eo2e4YF-F197mjScfeT8?usp=sharing) and put "model_1st.pth" and "model_2nd.pth" into the "trained_models" directory.
 
 ### Applying to images
 To relight images under `./data/test_images`, run the following code:
@@ -62,10 +62,10 @@ Please cite our paper if you find the code useful:
                Yoshihiro Kanamori,
                Yuki Endo},
   title     = {Relighting Humans in the Wild: Monocular Full-Body Human Relighting with Domain Adaptation},
-  journal   = {Comput. Graph. Forum},
+  journal   = {Computer Graphics Forum (Proc. of Pacific Graphics 2021)},
   volume    = {40},
   number    = {7},
   pages     = {--},
-  year      = {2021},
+  year      = {2021}
 }
 ```
