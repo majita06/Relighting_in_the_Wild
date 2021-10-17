@@ -1,6 +1,3 @@
-'''
-    define some helper functions for shtools
-'''
 import pyshtools
 from pyshtools.expand import MakeGridDH
 import numpy as np

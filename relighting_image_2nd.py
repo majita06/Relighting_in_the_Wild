@@ -1,7 +1,6 @@
 from glob import glob
 import cv2
 import os
-from numpy.lib.function_base import diff
 import torch
 import model
 model.train_baseline = False

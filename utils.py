@@ -1,10 +1,7 @@
 import numpy as np
 import torch
-import os
-
 from utils_shtools import *
 from pyshtools.rotate import djpi2, SHRotateRealCoef
-from pyshtools.expand import SHExpandDH
 
 
 def trim(img, mask, padding_x=5, padding_y=5):

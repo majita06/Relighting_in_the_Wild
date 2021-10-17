@@ -10,8 +10,8 @@ import numpy as np
 import argparse
 import utils
 from tqdm import tqdm
-parser = argparse.ArgumentParser(description='Relighting images')
 
+parser = argparse.ArgumentParser(description='Relighting images')
 parser.add_argument('--in_dir','-i', default='./result/relighting_video/1st/91WwxuTSaYS+cluster88', help='relighting result by 1st stage')
 parser.add_argument('--out_dir','-o', default='./result/relighting_video/2nd', help='relighting result by 1st stage')
 parser.add_argument('--model_path', '-m', default='./trained_models/model_2nd.pth', help='model path')

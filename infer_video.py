@@ -6,7 +6,6 @@ import cv2
 import os
 import model
 import torch
-import torch.nn.functional as F
 import argparse
 from tqdm import tqdm
 import utils
