@@ -33,7 +33,13 @@ NOTE: If you want to change the light for relighting, please edit the script dir
 
 ### Training
 #### 1st stage network
-
+1. 
+- 3Dモデルから取得したbinary masks("XXX_mask.png"), albedo maps("XXX_tex.png"), transport maps("XXX_transport.npz"), skin masks("XXX_parsing.png")を`./data/train_human_1st`に置きます．
+- 環境マップから取得したSH光源("YYY.npy")を`./data/train_light_1st`と`./data/test_light_1st`に置きます．
+2. Run train_1st.py
+```
+python3 train_1st.py --train_dir ./data/train_human_1st --test_dir ./data/test_human_1st ./data/train_light --train_light_dir --test_light_dir ./data/test_light --out_dir ./result/output_1st
+```
 #### 2nd stage network
 1. Reconstruct the real photo dataset by a trained 1st stage model.
 ```
