@@ -8,7 +8,6 @@ import torch
 import torch.nn.functional as F
 from tqdm import tqdm
 from skimage.metrics import structural_similarity as ssim
-import matplotlib.pyplot as plt
 import torch_optimizer as optim
 import utils
 

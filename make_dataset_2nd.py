@@ -1,5 +1,3 @@
-#baselineを使って反射率，伝達マップ，光源，推定(再構成も)
-
 from glob import glob
 import numpy as np
 import cv2

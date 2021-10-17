@@ -1,5 +1,3 @@
-#ここでinput,base,ours,sabunの動画も出力する
-
 from glob import glob
 import cv2
 import os

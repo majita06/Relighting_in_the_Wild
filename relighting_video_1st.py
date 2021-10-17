@@ -1,6 +1,3 @@
-
-#baselineを使って動画をリライティング(光源固定)
-
 from glob import glob
 import numpy as np
 import cv2
