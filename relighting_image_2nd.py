@@ -29,7 +29,7 @@ if gpu>-1:
     model.to('cuda')
 
 img_paths = sorted(glob(indir + '/*[!.mp4]'))
-print("Relighting by 1st stage...")
+print("Relighting by 2nd stage...")
 for img_path in tqdm(img_paths):
     input_name = os.path.basename(img_path)
     human_name = input_name.split('+')[0]
@@ -37,7 +37,7 @@ for img_path in tqdm(img_paths):
     if not os.path.exists(outdir):
         os.makedirs(outdir)
     frame_paths = sorted(glob(img_path + '/frame_*[!_mask].png'))
-    mask = cv2.imread('./demo/infer_images/%s/%s_mask.png' % (human_name,human_name),cv2.IMREAD_GRAYSCALE).astype(np.float32)/255.
+    mask = cv2.imread('./demo/infer_image/%s/%s_mask.png' % (human_name,human_name),cv2.IMREAD_GRAYSCALE).astype(np.float32)/255.
     mask3 = np.stack([mask for i in range(3)],2)
     N_frames = len(frame_paths)
     for i in range(N_frames):
