@@ -123,9 +123,9 @@ for id in range(min(len(input_paths), len(processed_paths))):
 
 
 #######################
-
-if not os.path.isdir('%s/training' % outdir):
-    os.makedirs('%s/training' % outdir)
+save_training_basepath = '%s/training' % outdir
+if not os.path.isdir(save_training_basepath):
+    os.makedirs(save_training_basepath)
 # model re-initialization 
 initialize_weights(net)
 step = 0
@@ -156,42 +156,41 @@ for epoch in range(1,maxepoch):
             net_in = net_in.data[0].permute(1,2,0).to('cpu').detach().numpy()
             net_gt = net_gt.data[0].permute(1,2,0).to('cpu').detach().numpy()
             prediction = prediction.data[0].permute(1,2,0).to('cpu').detach().numpy()
-            cv2.imwrite('%s/training/step%06d_%06d.jpg' % (outdir, step, id), 
+            cv2.imwrite(save_training_basepath + '/step%06d_%06d.jpg' % (step, id), 
                         np.uint8(np.concatenate([(net_in[:,:,:3]+1.)/2., (prediction+1.)/2., (net_gt+1.)/2.], axis=1).clip(0,1) * 255.))  
         pbar.update(1)
     pbar.close()    
 
     ###### test ######
     net.train_dropout = False
-    if epoch > 10:
-        pbar = tqdm(total=N_frames, desc='test', ascii=True)
-        for id in range(N_frames):
+    pbar = tqdm(total=N_frames, desc='test', ascii=True)
+    for id in range(N_frames):
 
-            net_in,net_gt = data_in_memory[id]
-            if gpu>-1:
-                net_in.to('cuda')
-                net_gt.to('cuda')
-            #############################
-            with torch.no_grad():
-                prediction = net(net_in) 
-            #############################
-            net_in = net_in.data[0].permute(1,2,0).to('cpu').detach().numpy()
-            net_gt = net_gt.data[0].permute(1,2,0).to('cpu').detach().numpy()
-            prediction = prediction.data[0].permute(1,2,0).to('cpu').detach().numpy()
+        net_in,net_gt = data_in_memory[id]
+        if gpu>-1:
+            net_in.to('cuda')
+            net_gt.to('cuda')
+        #############################
+        with torch.no_grad():
+            prediction = net(net_in) 
+        #############################
+        net_in = net_in.data[0].permute(1,2,0).to('cpu').detach().numpy()
+        net_gt = net_gt.data[0].permute(1,2,0).to('cpu').detach().numpy()
+        prediction = prediction.data[0].permute(1,2,0).to('cpu').detach().numpy()
 
-            cv2.imwrite(save_basepath + '/predictions_%05d.jpg' % id, 
-                np.uint8(np.concatenate([(net_in[:,:,:3]+1.)/2., (prediction+1.)/2., (net_gt+1.)/2.],1).clip(0,1) * 255.))
-            cv2.imwrite(save_basepath + '/out_main_%05d.jpg' % id, 
-                np.uint8(((prediction+1.)/2).clip(0,1) * 255.))
-            pbar.update(1)
-        pbar.close()
-        ################
+        cv2.imwrite(save_basepath + '/predictions_%05d.jpg' % id, 
+            np.uint8(np.concatenate([(net_in[:,:,:3]+1.)/2., (net_gt+1.)/2.,(prediction+1.)/2.],1).clip(0,1) * 255.))
+        cv2.imwrite(save_basepath + '/out_main_%05d.jpg' % id, 
+            np.uint8(((prediction+1.)/2).clip(0,1) * 255.))
+        pbar.update(1)
+    pbar.close()
+    ################
 
-        video_path = save_basepath + '.mp4'    
-        files_path = save_basepath + '/out_main_%05d.jpg'
-        os.system('ffmpeg -y -r 30 -i ' + files_path + ' -vcodec libx264 -pix_fmt yuv420p -r 60 -loglevel fatal ' + video_path)
-        video_path = save_basepath + '_compare.mp4'    
-        files_path = save_basepath + '/predictions_%05d.jpg'
-        os.system('ffmpeg -y -r 30 -i ' + files_path + ' -vcodec libx264 -pix_fmt yuv420p -r 60 -loglevel fatal ' + video_path)
+    video_path = save_basepath + '.mp4'    
+    files_path = save_basepath + '/out_main_%05d.jpg'
+    os.system('ffmpeg -y -r 30 -i ' + files_path + ' -vcodec libx264 -pix_fmt yuv420p -r 60 -loglevel fatal ' + video_path)
+    video_path = save_basepath + '_compare.mp4'    
+    files_path = save_basepath + '/predictions_%05d.jpg'
+    os.system('ffmpeg -y -r 30 -i ' + files_path + ' -vcodec libx264 -pix_fmt yuv420p -r 60 -loglevel fatal ' + video_path)
     net.train_dropout = True
 
