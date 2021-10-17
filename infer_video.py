@@ -13,12 +13,12 @@ parser = argparse.ArgumentParser(description='Relighting humans')
 parser.add_argument('--in_dir', '-i', default='./data/test_video/VIDEO_FRAME', help='Input directory')
 parser.add_argument('--out_dir', '-o', default='./result/infer_frame', help='Output directory')
 parser.add_argument('--model_path', '-m', default='./trained_models/model_1st.pth', help='Model path')
-parser.add_argument('--gpu', '-g', default="0", type=str, help='GPU ID (negative value means CPU)')
+parser.add_argument('--gpu', '-g', default=0, type=int, help='GPU ID (negative value means CPU)')
 args = parser.parse_args()
 indir_path = args.in_dir
 gpu = args.gpu
 if gpu>-1:
-    os.environ["CUDA_VISIBLE_DEVICES"]=gpu
+    os.environ["CUDA_VISIBLE_DEVICES"]=str(gpu)
 
 
 model_path = args.model_path

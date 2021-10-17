@@ -13,13 +13,13 @@ parser = argparse.ArgumentParser(description='Relighting images')
 parser.add_argument('--in_dir','-i', default='./result/relighting_video/1st/91WwxuTSaYS+cluster88', help='relighting result by 1st stage')
 parser.add_argument('--out_dir','-o', default='./result/relighting_video/2nd', help='relighting result by 1st stage')
 parser.add_argument('--model_path', '-m', default='./trained_models/model_2nd.pth', help='model path')
-parser.add_argument('--gpu', '-g', default="0", type=str, help='GPU ID (negative value means CPU)')
+parser.add_argument('--gpu', '-g', default=0, type=int, help='GPU ID (negative value means CPU)')
 args = parser.parse_args()
 
 indir = args.in_dir
 gpu = args.gpu
 if gpu>-1:
-    os.environ["CUDA_VISIBLE_DEVICES"]=gpu
+    os.environ["CUDA_VISIBLE_DEVICES"]=str(gpu)
 model_path = args.model_path
 input_name = os.path.basename(indir)
 human_name = input_name.split('+')[0]
