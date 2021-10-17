@@ -17,7 +17,7 @@ pip3 install -r requirements.txt
 2. Download our [two pre-trained models](https://drive.google.com/drive/folders/1q4dxQxM4hZ19Eo2e4YF-F197mjScfeT8?usp=sharing) and put "model_1st.pth" and "model_2nd.pth" into the "trained_models" directory.
 
 ### Applying to images
-To relight images under `./data/test_images`, run the following code:
+To relight images under `./data/sample_images`, run the following code:
 ```
 sh ./scripts/demo_image.sh ./data/sample_images
 ```
