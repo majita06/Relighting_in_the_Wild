@@ -2,7 +2,7 @@
 
 ![teaser](https://github.com/majita06/Relighting_in_the_Wild/blob/main/docs/teaser_pg.jpg)
 
-This code is an implementation of the following paper:
+This code is our implementation of the following paper:
 
 Daichi Tajima, Yoshihiro Kanamori, Yuki Endo: "Relighting Humans in the Wild: Monocular Full-Body Human Relighting with Domain Adaptation," Computer Graphics Forum (Proc. of Pacific Graphics 2021), 2021. [[Project]](http://cgg.cs.tsukuba.ac.jp/~tajima/pub/relighting_in_the_wild/)[[PDF]](http://cgg.cs.tsukuba.ac.jp/~tajima/pub/relighting_in_the_wild/pdf/tajima_PG21.pdf)
 
