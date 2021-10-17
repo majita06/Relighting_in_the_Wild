@@ -33,7 +33,7 @@ light = np.load(light_path)
 img_paths = sorted(glob(indir + '/*'))
 N_imgs = len(img_paths)
 print("Relighting by 1st stage...")
-for img_path in tqdm(img_paths):
+for img_path in tqdm(img_paths,ascii=True):
     img_name = os.path.basename(img_path)
     save_basepath = outdir + '/' + img_name +'+'+ light_name
     if not os.path.exists(save_basepath):

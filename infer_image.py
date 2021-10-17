@@ -68,7 +68,7 @@ mask_paths = sorted(glob(indir_path + '/*_mask.png'))
 N_imgs = len(mask_paths)
 N_masks = len(mask_paths)
 print("Infer images...")
-for i in tqdm(range(N_imgs)):
+for i in tqdm(range(N_imgs),ascii=True):
     img_name = os.path.basename(img_paths[i])[:-len('.jpg')]
     outdir_path = args.out_dir + '/' + img_name
     if not os.path.exists(outdir_path):

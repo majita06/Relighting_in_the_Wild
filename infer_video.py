@@ -78,7 +78,7 @@ if not os.path.exists(outdir_path):
 
 
 print("Infer frames...")
-for i in tqdm(range(N_frames)):
+for i in tqdm(range(N_frames),ascii=True):
     basename_frame = os.path.basename(frame_paths[i]).split('.')[0]
     img_orig = cv2.imread(frame_paths[i], cv2.IMREAD_COLOR).astype(np.float32)/255.
     mask_orig = cv2.imread(mask_paths[i], cv2.IMREAD_GRAYSCALE).astype(np.float32)/255.
