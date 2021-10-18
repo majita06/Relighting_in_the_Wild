@@ -65,8 +65,6 @@ def infer_light_transport_albedo_and_light(img, mask):
 
     return res_transport, res_albedo, res_light
 
-#ディレクトリの PATH のみを取得
-
 
 frame_paths = sorted(glob(indir_path + '/*[!_mask].png'))
 mask_paths = sorted(glob(indir_path + '/*_mask.png'))

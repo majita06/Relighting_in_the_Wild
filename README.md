@@ -65,7 +65,7 @@ Please cite our paper if you find the code useful:
   journal   = {Computer Graphics Forum (Proc. of Pacific Graphics 2021)},
   volume    = {40},
   number    = {7},
-  pages     = {--},
+  pages     = {205--216},
   year      = {2021}
 }
 ```

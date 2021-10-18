@@ -63,8 +63,6 @@ def infer_light_transport_albedo_and_light(img, mask):
 
     return res_transport, res_albedo, res_light
 
-#ディレクトリの PATH のみを取得
-
 img_paths = sorted(glob(indir_path + '/*.jpg'))
 mask_paths = sorted(glob(indir_path + '/*_mask.png'))
 N_imgs = len(mask_paths)
@@ -90,8 +88,6 @@ for i in tqdm(range(N_imgs),ascii=True):
     mask_sq = utils.square(mask_trim)
     img = cv2.resize(img_sq,(1024,1024))
     mask = cv2.resize(mask_sq,(1024,1024))
-    # img = img_orig
-    # mask = mask_orig
 
     transport, albedo, light = infer_light_transport_albedo_and_light(img, mask) 
     shading = np.matmul(transport, light).clip(0.,None)
