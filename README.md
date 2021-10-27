@@ -69,3 +69,6 @@ Please cite our paper if you find the code useful:
   year      = {2021}
 }
 ```
+
+## LICENSE
+We distribute our source codes and pre-trained models for research purpose only under the CC BY-NC-SA 4.0 license. We prohibit commercial use without our permission.
